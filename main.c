@@ -76,11 +76,25 @@ static void print_token_list(token_t **token_list)
     token_t *token = *token_list;
 
     for (; token; token = token->next) {
-        if (token->arg != NULL)
-            printf("%s\n", token->arg);
-        if (token->sep != 0)
-            printf("%c\n", token->sep);
+        if (token->arg)
+            printf("token:%s--\n", token->arg);
+        if (token->sep)
+            printf("token :%c--%d\n", token->sep, token->sep);
     }
+}
+
+static void free_token_list(token_t **token_list)
+{
+    token_t *head = *token_list;
+    token_t *tmp;
+
+    for (int i = 0; head; i++) {
+        tmp = head;
+        head = head->next;
+        free(tmp->arg);
+        free(tmp);
+    }
+    free(token_list);
 }
 
 static garbage_t init_garbage(char **str, char ***env)
@@ -94,6 +108,7 @@ static garbage_t init_garbage(char **str, char ***env)
     garbage.token_list = init_token_list(garbage.raw_command);
     if (garbage.token_list)
         print_token_list(garbage.token_list);
+    return garbage;
 }
 
 int main(int argc, char **argv, char **env)
@@ -108,6 +123,7 @@ int main(int argc, char **argv, char **env)
     // garbage.env = &env;
     while (getline(&str, &len, stdin) != -1 && my_strcmp(str, "exit\n")) {
         garbage = init_garbage(&str, &env);
+        free_token_list(garbage.token_list);
         // insert_spaces(&str);
         // travel_command(str, &env, &garbage);
         ttycheck();
