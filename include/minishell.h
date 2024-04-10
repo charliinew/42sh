@@ -41,6 +41,7 @@ typedef struct token_s {
     char sep;
     char *arg;
     int index;
+    struct token_s *prev;
     struct token_s *next;
 } token_t;
 

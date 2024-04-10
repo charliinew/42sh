@@ -16,7 +16,9 @@ SRC = main.c \
 	  src/redirection/redirection.c \
 	  src/redirection/redirection_errors.c \
 	  src/command_errors.c\
-	  src/add_separator.c
+	  src/add_separator.c\
+	  tools/tab_len.c\
+	  tools/token_to_str_array.c\
 
 OBJ = $(SRC:.c=.o)
 
