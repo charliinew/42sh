@@ -18,14 +18,14 @@ redirection_tab_t r_tab[] = {
 };
 
 lexing_tab_t l_tab[] = {
-    {'`', &backtick_function},
-    {'(', &backtick_function},
-    {')', &backtick_function},
-    {'*', &globbings_function},
-    {'?', &globbings_function},
-    {'[', &globbings_function},
-    {']', &globbings_function},
-    {'\\', &inhibitors_function},
-    {'"', &inhibitors_function},
+    // {'`', lexing = &backtick_function},
+    // {'(', lexing = &backtick_function},
+    // {')', lexing = &backtick_function},
+    {'*', globbings_function},
+    {'?', globbings_function},
+    {'[', globbings_function},
+    {']', globbings_function},
+    // {'\\', lexing = &inhibitors_function},
+    // {'"', lexing = &inhibitors_function},
     {0, 0}
 };

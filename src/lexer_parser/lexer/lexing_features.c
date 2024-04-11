@@ -29,7 +29,7 @@ void lexing_features(garbage_t *garbage, token_t **token_list)
     token_t *token = *token_list;
 
     for (; token; token = token->next) {
-        if (process_lexing_sep(garbage, token))
+        if (process_lexing_sep(garbage, &token))
             return;
     }
 }
