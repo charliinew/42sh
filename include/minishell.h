@@ -60,8 +60,10 @@ typedef struct garbage_s {
 
 typedef struct feature_tab_s {
     char sep;
-    void (*feature)(token_t **);
+    void (*feature)(garbage_t *, token_t **);
 } feature_tab_t;
+
+extern feature_tab_t f_tab[];
 
 token_t **init_token_list(char *str);
 char **token_to_str_array(token_t *start, int end);
