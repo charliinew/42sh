@@ -7,7 +7,6 @@
 
 SRC = main.c \
 	  src/lexer_parser/lexing.c\
-	  src/lexer_parser/parsing.c\
 	  src/cd.c \
 	  src/env.c \
 	  src/setenv.c \
@@ -18,12 +17,15 @@ SRC = main.c \
 	  src/redirection/redirection_errors.c \
 	  src/command_errors.c\
 	  src/add_separator.c\
+	  src/globbings/globbings.c\
+	  src/globbings/assemble_simple.c\
 	  tools/tab_len.c\
 	  tools/token_to_str_array.c\
+	  tools/free_token.c
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS += -Llib -lmy -Iinclude -g
+CFLAGS += -Llib -lmy -Iinclude -g -Wall -Wextra
 
 NAME = mysh
 
@@ -33,7 +35,7 @@ required:
 	make -C lib/my
 
 $(NAME): required $(OBJ)
-	gcc -o $(NAME) $(OBJ) $(CFLAGS)
+	gcc -o $(NAME)  $(OBJ) $(CFLAGS)
 
 clean:
 	rm -f $(OBJ)

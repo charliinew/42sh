@@ -18,7 +18,7 @@ int find_len_new_arg_simple(token_t *current)
     return (count);
 }
 
-int supp_garbage(token_t *token, char *true_arg, token_t **head)
+void supp_garbage(token_t *token, char *true_arg, token_t **head)
 {
     token_t *tmp = NULL;
 
@@ -26,7 +26,7 @@ int supp_garbage(token_t *token, char *true_arg, token_t **head)
     token->arg = true_arg;
     if (token->prev && token->prev->arg) {
         tmp = token->prev;
-        token->prev = token->prev->prev;
+        token->prev = tmp->prev;
         if (token->prev)
             token->prev->next = token;
         else
@@ -35,14 +35,14 @@ int supp_garbage(token_t *token, char *true_arg, token_t **head)
     }
     if (token->next && token->next->arg) {
         tmp = token->next;
-        token->next = token->next->next;
+        token->next = tmp->next;
         if (token->next)
             token->next->prev = token;
         free_token(tmp);
     }
 }
 
-int assemble_simple(token_t *current, token_t **head)
+void assemble_simple(token_t *current, token_t **head)
 {
     char *true_arg = NULL;
     int len = find_len_new_arg_simple(current);
