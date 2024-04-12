@@ -24,7 +24,8 @@ SRC = main.c \
 	  src/add_separator.c\
 	  tools/tab_len.c\
 	  tools/token_to_str_array.c\
-	  src/alias/alias.c
+	  src/alias/alias.c \
+	  src/local/local_var.c
 
 OBJ = $(SRC:.c=.o)
 

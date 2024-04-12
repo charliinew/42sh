@@ -21,6 +21,12 @@ typedef struct alias_s {
     struct alias_s *next;
 } alias_t;
 
+typedef struct var_s {
+    char *var;
+    char *value;
+    struct var_s *next;
+} var_t;
+
 typedef struct token_s {
     char sep;
     char *arg;
@@ -40,6 +46,7 @@ typedef struct garbage_s {
     int return_value;
     token_t **token_list;
     alias_t *alias;
+    var_t *local;
 } garbage_t;
 
 typedef struct redirection_tab_s {
@@ -87,4 +94,9 @@ int command_errors(char *str, char **pipes, int save_in, int save_out);
 int set_alias(char *name, char *command, garbage_t *garbage);
 void free_alias(garbage_t *garbage);
 char *check_alias(char *token, garbage_t *garbage);
+void unalias(char *name, garbage_t *garbage);
+int set_local(char *var, char *value, garbage_t *garbage);
+void unset_var(char *name, garbage_t *garbage);
+void free_var(garbage_t *garbage);
+char *check_local(char *token, garbage_t *garbage);
 #endif

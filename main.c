@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 void freeing(char *str, char **env)
 {
@@ -109,6 +110,7 @@ static garbage_t init_garbage(char **str, char ***env)
     garbage.return_value = 0;
     garbage.token_list = NULL;
     garbage.alias = NULL;
+    garbage.local = NULL;
     garbage.token_list = init_token_list(garbage.raw_command);
     if (garbage.token_list)
         print_token_list(garbage.token_list);

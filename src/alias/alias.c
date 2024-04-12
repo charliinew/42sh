@@ -31,8 +31,8 @@ int set_alias(char *name, char *command, garbage_t *garbage)
         return 1;
     if (name == NULL)
         return print_alias(garbage);
-    add->name = name;
-    add->com = command;
+    add->name = my_strdup(name);
+    add->com = my_strdup(command);
     add->next = garbage->alias;
     garbage->alias = add;
     garbage->return_value = 0;
@@ -69,4 +69,30 @@ void free_alias(garbage_t *garbage)
     }
 }
 
+static void delete_alias(alias_t *current, alias_t *prev, garbage_t *garbage)
+{
+    if (prev == NULL) {
+        garbage->alias = current->next;
+    } else {
+        prev->next = current->next;
+    }
+    free(current->name);
+    free(current->com);
+    free(current);
+    return;
+}
 
+void unalias(char *name, garbage_t *garbage)
+{
+    alias_t *current = garbage->alias;
+    alias_t *prev = NULL;
+
+    for (; current != NULL; current = current->next) {
+        if (strcmp(name, current->name) == 0) {
+            delete_alias(current, prev, garbage);
+            return;
+        }
+        prev = current;
+    }
+    return;
+}
