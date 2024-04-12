@@ -8,6 +8,7 @@
 #ifndef MINISHELL_HEADER
     #define MINISHELL_HEADER
     #include "my.h"
+    #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
     #include <stdbool.h>
@@ -63,7 +64,7 @@ typedef struct feature_tab_s {
     char sep;
     void (*feature)(token_t **);
 } feature_tab_t;
-void assemble_hard(token_t **current, token_t **head);
+int assemble_hard(token_t **current, token_t **head);
 int tab_len(char **);
 void assemble_simple(token_t *current, token_t **head);
 int globbings(token_t **start, int index);

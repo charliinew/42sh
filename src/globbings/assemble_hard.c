@@ -7,11 +7,13 @@
 
 #include "minishell.h"
 
-void assemble_hard(token_t **current, token_t **head)
+int assemble_hard(token_t **current, token_t **head)
 {
     assemble_simple(*current, head);
     if ((*current)->next && (*current)->next->sep == ']') {
         *current = (*current)->next;
         assemble_simple(*current, head);
+        return 1;
     }
+    return 0;
 }

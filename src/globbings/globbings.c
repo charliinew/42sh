@@ -13,7 +13,8 @@ char **make_globbings(char *str)
     int len = 0;
     char **arr = 0;
 
-    glob(str, GLOB_NOCHECK, NULL, &glob_result);
+    if (glob(str, 0, NULL, &glob_result) == GLOB_NOMATCH)
+        return NULL;
     for (; glob_result.gl_pathv[len] != NULL; len++);
     arr = malloc(sizeof(char *) * (len + 1));
     for (int i = 0; i < len; i++)
@@ -51,7 +52,7 @@ static void connect_new_list(
     *actual = prev;
 }
 
-void create_new_arg(token_t **actual, token_t **start, char **new_arg)
+static void create_new_arg(token_t **actual, token_t **start, char **new_arg)
 {
     token_t *new_list = NULL;
     token_t *prev = NULL;
@@ -70,21 +71,7 @@ void create_new_arg(token_t **actual, token_t **start, char **new_arg)
     connect_new_list(prev, actual, start, new_list);
 }
 
-int rebuild_token(token_t *current, token_t **start, int index)
-{
-    while (current && current->index <= index) {
-        if (current->sep == '*' || current->sep == '?')
-            assemble_simple(current, start);
-        if (current->sep == '[')
-            assemble_hard(&current, start);
-        if (current->sep == ']')
-            assemble_simple(current, start);
-        current = current->next;
-    }
-    return 0;
-}
-
-void correct_index(token_t *head, int index)
+static void correct_index(token_t *head, int index)
 {
     for (token_t *act = head; act; act = act->next) {
         act->index = index;
@@ -92,29 +79,102 @@ void correct_index(token_t *head, int index)
     }
 }
 
-static int check_glob(token_t **token, token_t **start)
+void supp_token_glob(token_t **token, token_t **start)
+{
+    token_t *to_delete = *token;
+    token_t *next = to_delete->next;
+    token_t *prev = to_delete->prev;
+
+    if (prev == NULL) {
+        *start = next;
+        (*start)->prev = NULL;
+        free_token(to_delete);
+        *token = next;
+        return;
+    }
+    if (next != NULL)
+        next->prev = prev;
+    prev->next = next;
+    free_token(to_delete);
+    *token = next;
+}
+
+static int check_glob(token_t **token, token_t **start, int *check)
 {
     char **new_arg = make_globbings((*token)->arg);
+    static int count = 0;
 
-    create_new_arg(token, start, new_arg);
-    free(new_arg);
-    return (0);
+    if (new_arg != NULL)
+        *check = 1;
+    else if (*check == 0) {
+        supp_token_glob(token, start);
+        *check = -1;
+    } else {
+        supp_token_glob(token, start);
+        *check = 0;
+    }
+    if (count == 0)
+        count = tab_len(new_arg);
+    if (*check == 1) {
+        create_new_arg(token, start, new_arg);
+        free(new_arg);
+    }
+    return (count);
+}
+
+int switch_sep_globbings(token_t **current, token_t **start)
+{
+    if ((*current)->sep == '*' || (*current)->sep == '?') {
+        assemble_simple(*current, start);
+        if (((*current)->next && (*current)->next->sep == '*') ||
+            ((*current)->next && (*current)->next->sep == '?') ||
+            ((*current)->next && (*current)->next->sep == '[')) {
+            return 0;
+        }
+        return 1;
+    }
+    if ((*current)->sep == '[' && assemble_hard(current, start) == 1) {
+        if (((*current)->next && (*current)->next->sep == '*') ||
+            ((*current)->next && (*current)->next->sep == '?') ||
+            ((*current)->next && (*current)->next->sep == '[')) {
+                return 0;
+            }
+        return 1;
+    }
+    return -1;
+}
+
+int rebuild_token(token_t *current, token_t **start, int index)
+{
+    token_t *next = NULL;
+    int count = 0;
+    int check = 0;
+    int which = 0;
+
+    while (current && current->index <= index) {
+        next = current->next;
+        which = switch_sep_globbings(&current, start);
+        if (which == 1)
+            count = check_glob(&current, start, &check);
+        if (check < 1 && which == 1)
+            continue;
+        if (current->sep == ']')
+            assemble_simple(current, start);
+        current = next;
+    }
+    if (check != 1)
+        count = -1;
+    return count;
 }
 
 int globbings(token_t **start, int index)
 {
     int save_index = (*start)->index;
-    token_t *next = NULL;
-    token_t *current = *start;
+    int count = 0;
 
-    rebuild_token(*start, start, index);
-    current = *start;
-    while (current && current->index <= index) {
-        next = current->next;
-        if (current->arg)
-            check_glob(&current, start);
-        current = next;
-    }
+    count = rebuild_token(*start, start, index);
     correct_index(*start, save_index);
-    return 0;
+    if (count == -1)
+        fprintf(stderr, "glob: No match.\n");
+    return count;
 }
