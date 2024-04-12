@@ -10,11 +10,6 @@
 #include <string.h>
 #include <unistd.h>
 
-static void redo_index(token_t **head)
-{
-
-}
-
 static void delete_node_string(token_t **head)
 {
     token_t *next = 0;
@@ -64,5 +59,7 @@ int get_string(token_t **head)
     (*head)->arg[0] = '\0';
     fill_string(head);
     delete_node_string(head);
+    for (token_t *current = (*head)->next; current; current = current->next)
+        current->index = current->prev->index;
     return 0;
 }
