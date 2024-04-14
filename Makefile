@@ -15,10 +15,11 @@ SRC = main.c \
 	  src/env.c \
 	  src/setenv.c \
 	  src/new_process.c \
-	  src/pipe/pipe.c \
-	  src/pipe/fork.c \
-	  src/redirection/redirection.c \
-	  src/redirection/redirection_errors.c \
+	  src/execution_functions/pipe/pipe.c \
+	  src/execution_functions/pipe/fork.c \
+	  src/execution_functions/redirection/redirection.c \
+	  src/execution_functuons/redirection/redirection_errors.c \
+	  src/execution_functuons/semicolon.c \
 	  src/command_errors.c\
 	  src/add_separator.c\
 	  tools/tab_len.c\

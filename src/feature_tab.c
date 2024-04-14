@@ -13,7 +13,7 @@
 #include <sys/wait.h>
 
 redirection_tab_t r_tab[] = {
-    {';', parsing_function},
+    {'|', pipe_handling},
     {0, 0}
 };
 

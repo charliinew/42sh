@@ -105,6 +105,8 @@ static garbage_t init_garbage(char **str, char ***env)
     garbage.env = env;
     garbage.raw_command = *str;
     garbage.return_value = 0;
+    garbage.save_out = STDOUT_FILENO;
+    garbage.save_in = STDIN_FILENO;
     garbage.token_list = NULL;
     garbage.alias = NULL;
     garbage.local = NULL;
