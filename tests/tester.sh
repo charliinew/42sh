@@ -96,6 +96,11 @@ load_test()
     echo -e "\e[1;36mtest minishell 1\e[0m"
   fi
 
+  if [ $id == 200 ]
+  then
+    echo -e "\e[1;36mtest 42sh\e[0m"
+  fi
+
   if [ $ok -eq 1 ]
   then
     if [ $debug -ge 1 ]
@@ -242,6 +247,14 @@ elif [ $# -eq 1 ] && [ "$1" == "minishell2" ]; then #copier et remplacer la dern
   for lst in $(cat tests/test | grep "^\[.*\]$" | grep -vi end | sed 's/\[//; s/\]//'); do
     path_backup=$PATH
     if [ "$lst" -ge 100 ] && [ "$lst" -le 200 ]; then #changez les valeurs pour mettre celles de vos tests
+      load_test "$lst" 1
+    fi
+    export PATH=$path_backup
+  done
+elif [ $# -eq 1 ] && [ "$1" == "42sh" ]; then #copier et remplacer la derniere variable
+  for lst in $(cat tests/test | grep "^\[.*\]$" | grep -vi end | sed 's/\[//; s/\]//'); do
+    path_backup=$PATH
+    if [ "$lst" -ge 200 ] && [ "$lst" -le 300 ]; then #changez les valeurs pour mettre celles de vos tests
       load_test "$lst" 1
     fi
     export PATH=$path_backup
