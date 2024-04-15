@@ -137,26 +137,27 @@ static int find_next_sep(token_t *token)
     return -1;
 }
 
-int redirection(garbage_t *garbage, token_t **token_list, token_t *token)
+int execute_redirection(garbage_t *garbage, token_t **token_list, token_t *token)
 {
     int result;
     int fd_in = -2;
     int fd_out = -2;
-    char *str = token_to_str(*token_list, find_next_sep(token));
+    char *str = token_to_str(*token_list, find_next_sep(token->next));
 
     for (int i = 0; str[i]; i++) {
-        // if (str[i] == '<') {
-        //     set_fd_in(str, &i, &fd_in, save_out);
-        //     continue;
-        // }
+        if (str[i] == '<') {
+            set_fd_in(str, &i, &fd_in, garbage->save_out);
+            continue;
+        }
         if (str[i] == '>')
             set_fd_out(str, &i, &fd_out);
     }
+    free(str);
     if (fd_out == -1 || fd_in == -1)
         return 1;
     // format_str(str);
-    new_process(token_to_str_array(*token_list, token->index));
-    result = function(str, env);
+    new_process(token_to_str_array(*token_list, token->index), *garbage->env);
+    // result = function(str, env);
     close_fd(fd_in, fd_out);
     return result;
 }

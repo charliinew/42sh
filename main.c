@@ -111,10 +111,6 @@ static garbage_t init_garbage(char **str, char ***env)
     garbage.alias = NULL;
     garbage.local = NULL;
     garbage.token_list = init_token_list(garbage.raw_command);
-    printf("----START FIRST TOKEN LIST----\n\n");
-    if (garbage.token_list)
-        print_token_list(garbage.token_list);
-    printf("----END FIRST TOKEN LIST----\n\n");
     return garbage;
 }
 

@@ -11,9 +11,8 @@ char *my_str_append_char(char *dest, char const c)
 {
     char *str = NULL;
     int i = 0;
-    int j = 0;
 
-    str = malloc_str(strlen(dest) + 1);
+    str = malloc_str(my_strlen(dest) + 1);
     for (i = 0; dest[i]; i++) {
         str[i] = dest[i];
     }
@@ -28,7 +27,7 @@ char *my_str_append(char *dest, char const *src)
     int i = 0;
     int j = 0;
 
-    str = malloc_str(strlen(dest) + strlen(src));
+    str = malloc_str(my_strlen(dest) + my_strlen(src));
     for (i = 0; dest[i]; i++) {
         str[i] = dest[i];
     }

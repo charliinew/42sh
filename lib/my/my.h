@@ -7,6 +7,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef LIBMY_HEADER
     #define LIBMY_HEADER

@@ -74,6 +74,11 @@ int globbings_function(garbage_t *garbage, token_t **token_list);
 
 int new_process(char **command, char **env);
 
+int execute_semicolon(garbage_t *garbage, token_t **token_list, token_t *token);
+
+int execute_redirection(garbage_t *garbage, token_t **token_list, token_t *token);
+
+char *token_to_str(token_t *start, int end);
 char **token_to_str_array(token_t *start, int end);
 void insert_spaces(char **input);
 void freeing(char *str, char **board);
@@ -88,7 +93,6 @@ int pipe_handling(char *str, char ***env, garbage_t *garbage);
 void pipe_redirect(int i, int num_pipe, int pipeline[][2]);
 void fork_pipes(char **pipes, int pipeline[][2], int num_pipe,
     garbage_t *garbage);
-int redirection(char *str, char ***env, int save_out);
 int redirection_errors(char *command, char **pipes, int i);
 int command_errors(char *str, char **pipes, int save_in, int save_out);
 int set_alias(char *name, char *command, garbage_t *garbage);
