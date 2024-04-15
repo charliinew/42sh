@@ -14,6 +14,6 @@
 
 int execute_semicolon(garbage_t *garbage, token_t **token_list, token_t *token)
 {
-    garbage->return_value = new_process(token_to_str_array(*token_list, token->index));
+    garbage->return_value = new_process(token_to_str_array(*token_list, token->index), *garbage->env);
     return 0;
 }
