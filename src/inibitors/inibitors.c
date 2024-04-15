@@ -5,6 +5,7 @@
 ** inibitors.c
 */
 
+#include "errors.h"
 #include "minishell.h"
 #include <stdlib.h>
 #include <string.h>
@@ -21,10 +22,10 @@ static void delete_node_string(token_t **head)
         next = current->next;
         free(current);
     }
-    (*head)->next = next;
+    (*head)->next = current->next;
     free(current);
-    if (next != NULL)
-        next->prev = *head;
+    if ((*head)->next != NULL)
+        (*head)->next->prev = *head;
 }
 
 static void fill_string(token_t **head)
@@ -40,14 +41,14 @@ static void fill_string(token_t **head)
     }
 }
 
-int get_string(token_t **head)
+int get_string(garbage_t *garbage, token_t **head)
 {
     token_t *current = (*head)->next;
     int len = 0;
 
     for (; current && current->sep != '\"'; current = current->next);
     if (current == NULL) {
-        write(2, "Unmatched '\"'.\n", 15);
+        write(2, STR_ERROR, strlen(STR_ERROR));
         return 1;
     }
     for (current = (*head)->next; current->sep != '\"';
@@ -60,6 +61,6 @@ int get_string(token_t **head)
     fill_string(head);
     delete_node_string(head);
     for (token_t *current = (*head)->next; current; current = current->next)
-        current->index = current->prev->index;
+        current->index = current->prev->index + 1;
     return 0;
 }
