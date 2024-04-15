@@ -75,6 +75,8 @@ int globbings_function(garbage_t *garbage, token_t **token_list);
 
 int get_string(garbage_t *, token_t **head);
 
+int inibitor(garbage_t *, token_t **head);
+
 char **token_to_str_array(token_t *start, int end);
 void insert_spaces(char **input);
 void freeing(char *str, char **board);

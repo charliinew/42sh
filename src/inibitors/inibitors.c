@@ -7,8 +7,10 @@
 
 #include "errors.h"
 #include "minishell.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 
 static void delete_node_string(token_t **head)
@@ -41,7 +43,7 @@ static void fill_string(token_t **head)
     }
 }
 
-int get_string(garbage_t *garbage, token_t **head)
+int get_string(garbage_t *, token_t **head)
 {
     token_t *current = (*head)->next;
     int len = 0;
@@ -62,5 +64,82 @@ int get_string(garbage_t *garbage, token_t **head)
     delete_node_string(head);
     for (token_t *current = (*head)->next; current; current = current->next)
         current->index = current->prev->index + 1;
+    return 0;
+}
+
+static void concat_arg(token_t *current)
+{
+    if (current->prev && current->prev->arg)
+        my_strcat(current->arg, current->prev->arg);
+    if (current->next->sep)
+        my_strncat(current->arg, &current->next->sep, 1);
+    else
+        my_strcat(current->arg, current->next->arg);
+    if (current->next->sep && current->next->next && current->next->next->arg)
+        my_strcat(current->arg, current->next->next->arg);
+}
+
+static void free_node(token_t *token)
+{
+    if (token->arg)
+        free(token->arg);
+    free(token);
+}
+
+static void delete_node_backslash(garbage_t *garbage, token_t *current)
+{
+    token_t *save;
+
+    if (current->prev && current->prev->arg) {
+        save = current->prev->prev;
+        free_node(current->prev);
+        if (save)
+            save->next = current;
+        current->prev = save;
+    }
+    save = current->next->next;
+    if (current->next->sep && save && save->arg) {
+        save = save->next;
+        free_node(current->next->next);
+    }
+    free_node(current->next);
+    current->next = save;
+    if (save)
+        save->prev = current;
+    if (current->prev == 0)
+        *garbage->token_list = current;
+}
+
+static void reset_index(token_t *current)
+{
+    int index = 0;
+
+    if (current->prev)
+        index = current->prev->index + 1;
+    current->index = index;
+    for (current = current->next; current; current = current->next)
+        current->index = current->prev->index + 1;
+}
+
+int inibitor(garbage_t *garbage, token_t **head)
+{
+    token_t *current = *head;
+    int new_len = 0;
+
+    if (current->next == 0) {
+        write(2, "How is that even possible?\n", 27);
+        return 1;
+    }
+    if (current->prev && current->prev->arg != 0)
+        new_len += my_strlen(current->prev->arg);
+    new_len += (current->next->sep == 0) ? my_strlen(current->next->arg) : 1;
+    if (current->next->sep && current->next->next && current->next->next->arg)
+        new_len += my_strlen(current->next->next->arg);
+    current->sep = 0;
+    current->arg = malloc(new_len + 1);
+    current->arg[0] = '\0';
+    concat_arg(current);
+    delete_node_backslash(garbage, current);
+    reset_index(current);
     return 0;
 }
