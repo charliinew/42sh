@@ -15,7 +15,13 @@ SRC = main.c \
 	  src/redirection/redirection.c \
 	  src/redirection/redirection_errors.c \
 	  src/command_errors.c\
-	  src/add_separator.c
+	  src/add_separator.c \
+	  src/history/add_history.c \
+	  src/history/display_history.c \
+	  src/history/history_command.c \
+	  src/history/my_str_to_minishell_array.c \
+	  src/history/my_str_to_minishell_array2.c \
+	  src/history/my_str_to_minishell_array3.c \
 
 OBJ = $(SRC:.c=.o)
 

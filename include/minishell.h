@@ -9,6 +9,7 @@
     #define MINISHELL_HEADER
     #include "my.h"
     #include <stdlib.h>
+    #include <stdio.h>
     #define IS_ALPHA(c) (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'))
     #define IS_NUM(c) ('0' <= c && c <= '9')
 typedef struct garbage_s {
@@ -18,6 +19,13 @@ typedef struct garbage_s {
     int save_in;
     int save_out;
 } garbage_t;
+typedef struct history_s {
+    int id;
+    char *time;
+    char *command;
+    struct history_s *prev;
+    struct history_s *next;
+} history_t;
 void insert_spaces(char **input);
 void freeing(char *str, char **board);
 void format_str(char *str);
@@ -35,4 +43,21 @@ void fork_pipes(char **pipes, int pipeline[][2], int num_pipe,
 int redirection(char *str, char ***env, int save_out);
 int redirection_errors(char *command, char **pipes, int i);
 int command_errors(char *str, char **pipes, int save_in, int save_out);
+
+void add_history(char *command, history_t **history);
+int history_command(char *str, history_t **history);
+void clear_history(history_t **history);
+void show_reverse_history(history_t **history, int *status_flags);
+void show_no_param_history(history_t **history, int *status_flags);
+void show_history(history_t **history);
+void show_history_num(int num, history_t **history);
+char **my_str_to_minishell_array(char const *str, char *separateur);
+int my_c_redi_pipe(char c);
+int my_c_pipe(char c);
+void add_pipe(char **tab, int **index, char const *str, int *h);
+int my_c_redi_r(char c);
+int my_c_redi_g(char c);
+void add_redi_r(char **tab, int **index, char const *str, int *h);
+void add_redi_g(char **tab, int **index, char const *str, int *h);
+
 #endif
