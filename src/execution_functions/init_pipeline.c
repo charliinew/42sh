@@ -13,6 +13,20 @@
 #include <sys/wait.h>
 #include <signal.h>
 
+void free_pipeline(pipeline_t **pipeline)
+{
+    pipeline_t *tmp = *pipeline;
+
+    for (; tmp; tmp = tmp->next) {
+        if (tmp->token_list)
+            free_token_list(tmp->token_list);
+        if (tmp->sep)
+            free(tmp->sep);
+    }
+    free(pipeline);
+    pipeline = NULL;
+}
+
 static void reverse_pipeline(pipeline_t **commands)
 {
     pipeline_t *prev = NULL;
@@ -48,7 +62,8 @@ static char *get_sep(char const *str, int *i)
     if (!sep)
         return NULL;
     sep[0] = str[*i];
-    if (str[*i] == '|' || str[*i] == '&' || str[*i] == '<' || str[*i] == '>') {
+    if (str[*i] == '|' || str[*i] == '&'||
+        str[*i] == '<' || str[*i] == '>') {
         if (str[*i] == str[*i + 1]) {
             sep[1] = str[*i];
             *i += 1;
@@ -62,13 +77,7 @@ static pipeline_t *build_node(char *str, int *i, int index)
     char *command = NULL;
     pipeline_t *node = malloc(sizeof(pipeline_t));
 
-    if (!node)
-        return NULL;
     command = malloc_str(*i - index);
-    if (!command) {
-        free(node);
-        return NULL;
-    }
     command = my_strncpy(command, &str[index], *i - index);
     if (*i == 0)
         node->token_list = NULL;

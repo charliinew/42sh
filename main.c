@@ -101,20 +101,6 @@ static void print_pipeline(pipeline_t **pipeline)
     }
 }
 
-static void free_token_list(token_t **token_list)
-{
-    token_t *head = *token_list;
-    token_t *tmp;
-
-    for (int i = 0; head; i++) {
-        tmp = head;
-        head = head->next;
-        free(tmp->arg);
-        free(tmp);
-    }
-    free(token_list);
-}
-
 static garbage_t init_garbage(char **str, char ***env)
 {
     garbage_t garbage;
@@ -144,6 +130,7 @@ int main(int argc, char **argv, char **env)
     ttycheck();
     while (getline(&str, &len, stdin) != -1 && my_strcmp(str, "exit\n")) {
         garbage = init_garbage(&str, &env);
+        process_execution(&garbage, garbage.pipeline);
         // lexing_features(&garbage, garbage.token_list);
         // parsing_function(&garbage, garbage.token_list);
         // free_token_list(garbage.token_list);

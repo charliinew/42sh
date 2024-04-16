@@ -92,6 +92,12 @@ int execute_redirection(garbage_t *garbage, token_t **token_list, token_t *token
 
 pipeline_t **init_pipeline(char *str);
 
+void process_execution(garbage_t *garbage, pipeline_t **pipeline);
+
+void free_token_list(token_t **token_list);
+
+void free_pipeline(pipeline_t **pipeline);
+
 char *token_to_str(token_t *start, int end);
 char **token_to_str_array(token_t *start, int end);
 void insert_spaces(char **input);
