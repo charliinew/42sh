@@ -34,7 +34,8 @@ static void display_command(char *line, history_t *tmp)
         printf("%s", line);
 }
 
-static void analyse_input(int key, char **line, history_t **tmp, history_t **hist)
+static void analyse_input(int key, char **line, history_t **tmp,
+    history_t **hist)
 {
     switch (key) {
         case KEY_UP:
@@ -72,7 +73,7 @@ static void update_command(int ch, char **line, history_t **tmp, int len)
     }
 }
 
-static int is_arrow()
+static int is_arrow(void)
 {
     getchar();
     switch (getchar()) {
@@ -118,7 +119,7 @@ static int use_input(char **line, history_t **tmp, int len, history_t **hist)
 }
 
 static int manage_input(char **line, history_t **tmp, size_t *n, history_t
-**hist)
+    **hist)
 {
     int len = my_strlen(*line);
 

@@ -8,7 +8,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-void set_non_canonical_mode()
+void set_non_canonical_mode(void)
 {
     struct termios term;
 

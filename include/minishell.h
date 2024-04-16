@@ -71,7 +71,7 @@ void add_redi_r(char **tab, int **index, char const *str, int *h);
 void add_redi_g(char **tab, int **index, char const *str, int *h);
 
 int my_getline(char **line, size_t *n, history_t **hist);
-void set_non_canonical_mode();
+void set_non_canonical_mode(void);
 int is_end(char **line, int len);
 void is_del(char **line, int len);
 
