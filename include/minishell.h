@@ -18,13 +18,7 @@
     #define KEY_LEFT 4
     #define KEY_TAB 5
     #define KEY_BACKSPACE 6
-typedef struct garbage_s {
-    char ***env;
-    char **line;
-    char **command;
-    int save_in;
-    int save_out;
-} garbage_t;
+
 typedef struct history_s {
     int id;
     char *time;
@@ -32,6 +26,16 @@ typedef struct history_s {
     struct history_s *prev;
     struct history_s *next;
 } history_t;
+
+typedef struct garbage_s {
+    char ***env;
+    char **line;
+    char **command;
+    history_t **history;
+    int save_in;
+    int save_out;
+} garbage_t;
+
 void insert_spaces(char **input);
 void freeing(char *str, char **board);
 void format_str(char *str);
@@ -72,8 +76,8 @@ void add_redi_g(char **tab, int **index, char const *str, int *h);
 
 int my_getline(char **line, size_t *n, history_t **hist);
 void set_non_canonical_mode(void);
-int is_end(char **line, int len);
-void is_del(char **line, int len);
+int is_end(char **line, int len, history_t *tmp);
+void is_del(char **line, int len, history_t *tmp);
 
 
 #endif

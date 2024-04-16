@@ -26,7 +26,7 @@ static int choose_command(char **line, history_t **tmp, int exit)
 
 static void display_command(char *line, history_t *tmp)
 {
-    printf("\033[K\r");
+    printf("\033[2K\r");
     ttycheck();
     if (tmp != NULL)
         printf("%s", tmp->command);
@@ -56,17 +56,17 @@ static void analyse_input(int key, char **line, history_t **tmp,
     }
 }
 
-static void update_command(int ch, char **line, history_t **tmp, int len)
+static void update_command(int ch, char **line, history_t *tmp, int len)
 {
     size_t len_tmp;
 
-    if (*tmp != NULL) {
-        len_tmp = my_strlen((*tmp)->command);
-        (*tmp)->command = realloc(tmp, (len_tmp + 120) * sizeof(char));
-        if ((*tmp)->command == NULL)
+    if (tmp != NULL) {
+        len_tmp = my_strlen(tmp->command);
+        tmp->command = realloc(tmp->command, (len_tmp + 2) * sizeof(char));
+        if (tmp->command == NULL)
             return;
-        (*tmp)->command[len_tmp] = (char) ch;
-        (*tmp)->command[len_tmp + 1] = '\0';
+        tmp->command[len_tmp] = (char) ch;
+        tmp->command[len_tmp + 1] = '\0';
     } else {
         (*line)[len] = (char) ch;
         (*line)[len + 1] = '\0';
@@ -107,14 +107,13 @@ static int use_input(char **line, history_t **tmp, int len, history_t **hist)
     int sp_key = get_id_key(ch);
 
     if (ch == '\n')
-        return is_end(line, len);
+        return is_end(line, len, *tmp);
     if (sp_key == 0)
-        update_command(ch, line, tmp, len);
+        update_command(ch, line, *tmp, len);
     else if (sp_key == KEY_BACKSPACE)
-        is_del(line, len);
+        is_del(line, len, *tmp);
     else
         analyse_input(sp_key, line, tmp, hist);
-    display_command(*line, *tmp);
     return 0;
 }
 
@@ -142,8 +141,10 @@ int my_getline(char **line, size_t *n, history_t **hist)
     if (*line == NULL)
         return -1;
     *line[0] = '\0';
+    display_command(*line, tmp);
     while (1) {
         exit = manage_input(line, &tmp, n, hist);
+        display_command(*line, tmp);
         if (exit != 0)
             break;
     }

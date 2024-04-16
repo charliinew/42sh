@@ -25,6 +25,7 @@ SRC = main.c \
 	  src/history/my_str_to_minishell_array3.c \
 	  src/input_management/input_management.c \
 	  src/input_management/my_getline.c \
+	  src/input_management/non_canonical_mode.c \
 
 OBJ = $(SRC:.c=.o)
 

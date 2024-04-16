@@ -9,6 +9,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void history_up_end(history_t **tmp)
+{
+    if ((*tmp)->prev == NULL)
+        return;
+    memcpy(*tmp, (*tmp)->prev->next, sizeof(history_t));
+    (*tmp)->command = my_strdup((*tmp)->prev->next->command);
+}
+
 void history_up(history_t **tmp, history_t **history)
 {
     if (*tmp == NULL && *history == NULL)
@@ -19,11 +27,9 @@ void history_up(history_t **tmp, history_t **history)
         (*tmp)->command = my_strdup((*history)->command);
     } else if (*tmp != NULL && (*tmp)->next != NULL) {
         memcpy(*tmp, (*tmp)->next, sizeof(history_t));
-        (*tmp)->command = my_strdup((*tmp)->next->command);
-    } else {
-        memcpy(*tmp, (*tmp)->prev->next, sizeof(history_t));
-        (*tmp)->command = my_strdup((*tmp)->prev->next->command);
-    }
+        (*tmp)->command = my_strdup((*tmp)->command);
+    } else
+        history_up_end(tmp);
 }
 
 void history_down(history_t **tmp)
@@ -32,7 +38,7 @@ void history_down(history_t **tmp)
         return;
     else if (*tmp != NULL && (*tmp)->prev != NULL) {
         memcpy(*tmp, (*tmp)->prev, sizeof(history_t));
-        (*tmp)->command = my_strdup((*tmp)->prev->command);
+        (*tmp)->command = my_strdup((*tmp)->command);
     } else {
         free((*tmp)->command);
         *tmp = NULL;
