@@ -26,6 +26,7 @@ SRC = main.c \
 	  src/input_management/input_management.c \
 	  src/input_management/my_getline.c \
 	  src/input_management/non_canonical_mode.c \
+	  src/input_management/command_management.c \
 
 OBJ = $(SRC:.c=.o)
 

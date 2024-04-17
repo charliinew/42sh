@@ -18,6 +18,7 @@
     #define KEY_LEFT 4
     #define KEY_TAB 5
     #define KEY_BACKSPACE 6
+    #define KEY_SUPPR 7
 
 typedef struct history_s {
     int id;
@@ -75,10 +76,14 @@ void add_redi_r(char **tab, int **index, char const *str, int *h);
 void add_redi_g(char **tab, int **index, char const *str, int *h);
 
 void display_command(char *line, history_t *tmp, int cursor_mv);
+int choose_command(char **line, history_t **tmp, int exit);
+void update_command(int ch, char **line, history_t *tmp, int cursor);
+void delete_char(char *line, int len, int index);
+void insert_char(char *line, int ch, int len, int index);
 int my_getline(char **line, size_t *n, history_t **hist);
 void set_non_canonical_mode(void);
 int is_end(char **line, int len, history_t *tmp, int *cursor_mv);
-void is_del(char **line, int len, history_t *tmp);
+int is_del(char **line, history_t *tmp, int *cursor, int sp_key);
 int arrow_right(int *cursor);
 int arrow_left(history_t *tmp, char *line, int *cursor);
 
