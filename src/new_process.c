@@ -119,7 +119,7 @@ static int return_status(int status)
     return 1;
 }
 
-int new_process(char **command, char **env)
+int new_process(pipeline_t *node, char **command, char **env)
 {
     int pid;
     int status;
@@ -131,12 +131,22 @@ int new_process(char **command, char **env)
     if (pid == -1)
         exit(84);
     if (pid == 0) {
+        if (node->input != STDIN_FILENO)
+            dup2(node->input, STDIN_FILENO);
+        if (node->output != STDOUT_FILENO)
+            dup2(node->output, STDOUT_FILENO);
         execve(path, command, env);
         if (errno == ENOEXEC)
             error_write(path, ": Exec format error. Wrong Architecture.\n");
         exit(1);
-    } else
+    } else {
+        node->pid = pid;
+        if (node->input != STDIN_FILENO)
+            close(node->input);
+        if (node->output != STDOUT_FILENO)
+            close(node->output);
         waitpid(pid, &status, 0);
+    }
     freeing(path, command);
     return return_status(status);
 }

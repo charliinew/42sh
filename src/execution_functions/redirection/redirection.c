@@ -157,8 +157,8 @@ int execute_redirection(garbage_t *garbage, pipeline_t *pipeline)
     if (fd_out == -1 || fd_in == -1)
         return 1;
     // format_str(str);
-    new_process(token_to_str_array(*pipeline->token_list,
-        get_token_list_size(*pipeline->token_list)), *garbage->env);
+    // new_process(token_to_str_array(*pipeline->token_list,
+        // get_token_list_size(*pipeline->token_list)), *garbage->env);
     // result = function(str, env);
     close_fd(fd_in, fd_out);
     return result;

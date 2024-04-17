@@ -34,7 +34,8 @@ int function(char *str, char ***env)
         return delete_env(str, env);
     if (my_strncmp(str, "env", 3) == 0)
         return show_env(*env);
-    return new_process(&str, *env);
+    return 0;
+    // return new_process(&str, *env);
 }
 
 static void ttycheck(void)

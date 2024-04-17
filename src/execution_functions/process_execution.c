@@ -47,7 +47,7 @@ static int process_separator(garbage_t *garbage, pipeline_t *pipeline)
     for (i = 0; r_tab[i].sep && strcmp(r_tab[i].sep, pipeline->sep); i++);
     if (r_tab[i].sep == 0)
         return EXIT_FAILURE;
-    r_tab[i].redirection(garbage, pipeline);
+    pipeline = r_tab[i].redirection(garbage, pipeline);
     return EXIT_SUCCESS;
 }
 

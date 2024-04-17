@@ -53,6 +53,7 @@ typedef struct garbage_s {
     char **command;
     int save_in;
     int save_out;
+    int fd[2][2];
     void *history;
     char *raw_command;
     int return_value;
@@ -64,7 +65,7 @@ typedef struct garbage_s {
 
 typedef struct redirection_tab_s {
     char *sep;
-    int (*redirection)(garbage_t *, pipeline_t *);
+    pipeline_t *(*redirection)(garbage_t *, pipeline_t *);
 } redirection_tab_t;
 
 typedef struct lexing_tab_s {
@@ -84,9 +85,9 @@ int parsing_function(garbage_t *garbage, token_t **token_list);
 
 int globbings_function(garbage_t *garbage, token_t **token_list);
 
-int new_process(char **command, char **env);
+int new_process(pipeline_t *pipeline, char **command, char **env);
 
-int execute_semicolon(garbage_t *garbage,  pipeline_t *pipeline);
+pipeline_t *execute_semicolon(garbage_t *garbage,  pipeline_t *pipeline);
 
 int execute_redirection(garbage_t *garbage,  pipeline_t *pipeline);
 
@@ -97,6 +98,8 @@ void process_execution(garbage_t *garbage, pipeline_t **pipeline);
 void free_token_list(token_t **token_list);
 
 void free_pipeline(pipeline_t **pipeline);
+
+pipeline_t *execute_pipe(garbage_t *garbage, pipeline_t *commands);
 
 char *token_to_str(token_t *start);
 int get_token_list_size(token_t *token);

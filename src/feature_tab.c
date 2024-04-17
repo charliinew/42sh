@@ -15,11 +15,10 @@
 redirection_tab_t r_tab[] = {
     {";", execute_semicolon},
     {"\n", execute_semicolon},
-    // {"<", execute_redirection},
+    {"|", execute_pipe},
     // {"<<", execute_redirection},
     // {">", execute_redirection},
     // {">>", execute_redirection},
-    // {"|", execute_pipe},
     // {"||", execute_or},
     // {"&", execute_single_and},
     // {"&&", execute_and},
