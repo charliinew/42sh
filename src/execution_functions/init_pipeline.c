@@ -65,7 +65,7 @@ static char *get_sep(char const *str, int *i)
         sep[0] = '\n';
     else
         sep[0] = str[*i];
-    if (str[*i] == '|' || str[*i] == '&'||
+    if (str[*i] == '|' || str[*i] == '&' ||
         str[*i] == '<' || str[*i] == '>') {
         if (str[*i] == str[*i + 1]) {
             sep[1] = str[*i];

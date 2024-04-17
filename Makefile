@@ -28,13 +28,18 @@ SRC = main.c \
 	  tools/token_to_str.c\
 	  src/alias/alias.c \
 	  src/local/local_var.c \
-	  tools/clean_str.c
+	  tools/clean_str.c \
+	  src/globs_tab.c \
+	  tools/contain_char.c \
+	  src/builtins_tab.c \
+	  tools/array_to_str.c \
+	  src/execution_functions/execute_built.c
 
 OBJ = $(SRC:.c=.o)
 
 CFLAGS += -Llib -lmy -Iinclude -g
 
-NAME = mysh
+NAME = 42sh
 
 all: $(NAME)
 

@@ -34,7 +34,7 @@ static int len_nodes(token_t **token_list)
 
     while (current) {
         compt++;
-        current = current->next;;
+        current = current->next;
     }
     return compt;
 }

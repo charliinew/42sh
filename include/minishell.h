@@ -68,6 +68,11 @@ typedef struct redirection_tab_s {
     pipeline_t *(*redirection)(garbage_t *, pipeline_t *);
 } redirection_tab_t;
 
+typedef struct builtins_s {
+    char *com;
+    int (*built)(char *str, char ***env);
+} builtins_t;
+
 typedef struct lexing_tab_s {
     char sep;
     int (*lexing)(garbage_t *, token_t **);
@@ -76,6 +81,8 @@ typedef struct lexing_tab_s {
 extern redirection_tab_t r_tab[];
 
 extern lexing_tab_t l_tab[];
+
+extern builtins_t built[];
 
 token_t **init_token_list(char *str);
 
@@ -87,9 +94,9 @@ int globbings_function(garbage_t *garbage, token_t **token_list);
 
 int new_process(pipeline_t *pipeline, char **command, char **env);
 
-pipeline_t *execute_semicolon(garbage_t *garbage,  pipeline_t *pipeline);
+pipeline_t *execute_semicolon(garbage_t *garbage, pipeline_t *pipeline);
 
-pipeline_t *execute_redirection(garbage_t *garbage,  pipeline_t *pipeline);
+pipeline_t *execute_redirection(garbage_t *garbage, pipeline_t *pipeline);
 
 pipeline_t **init_pipeline(char *str);
 
@@ -110,7 +117,7 @@ void format_str(char *str);
 int function(char *str, char ***env);
 int change_dir(char *str, char ***env);
 char **copy_env(char **env);
-int show_env(char **env);
+int show_env(char *str, char ***env);
 int set_environnement(char *str, char ***env);
 int delete_env(char *str, char ***env);
 int pipe_handling(char *str, char ***env, garbage_t *garbage);
@@ -130,4 +137,8 @@ char *check_local(char *token, garbage_t *garbage);
 void clean_space(char *str);
 void print_token_list(token_t **token_list);
 void print_pipeline(pipeline_t **pipeline);
+int contain(char *str, char character);
+char *array_to_str(char **array);
+int check_built(char **command, garbage_t *garbage);
+int check_built_on_fork(char **command, char ***env);
 #endif

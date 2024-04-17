@@ -66,10 +66,5 @@ int globbings_function(garbage_t *garbage, token_t **token_list)
         *token_list = create_new_arg(head, new_arg);
         free(new_arg);
     }
-    // while (current && current->next) {
-    //     new_arg = make_globbings(current->next->arg);
-    //     current->next = create_new_arg(current->next, new_arg, &current);
-    //     free(new_arg);
-    // }
     return 0;
 }

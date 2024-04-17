@@ -105,8 +105,6 @@ static void set_input(char *str, int *i, int save_out)
 
 static void set_fd_in(char *str, pipeline_t *pipeline)
 {
-    // if (!strcmp(pipeline->sep, "<<"));
-        // return set_input(str, i, save_out);
     pipeline->next->input = open(str, O_RDONLY);
     if (pipeline->next->input == -1)
         return write_error(str);
@@ -136,7 +134,8 @@ pipeline_t *execute_redirection(garbage_t *garbage, pipeline_t *pipeline)
     }
     if (!strcmp(pipeline->sep, ">") || !strcmp(pipeline->sep, ">>")) {
         set_fd_out(str, pipeline);
-        garbage->return_value = new_process(pipeline, token_to_str_array(*pipeline->token_list,
+        garbage->return_value = new_process(pipeline,
+            token_to_str_array(*pipeline->token_list,
             get_token_list_size(*pipeline->token_list)), *garbage->env);
             free(str);
             return pipeline->next;

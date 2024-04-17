@@ -53,7 +53,7 @@ static pipeline_t *process_separator(garbage_t *garbage, pipeline_t *pipeline)
 
 static void execute_pipeline(garbage_t *garbage, pipeline_t *pipeline)
 {
-    for (;pipeline ;pipeline = pipeline->next)
+    for (; pipeline; pipeline = pipeline->next)
         pipeline = process_separator(garbage, pipeline);
 }
 

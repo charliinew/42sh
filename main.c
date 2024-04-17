@@ -24,38 +24,10 @@ void freeing(char *str, char **env)
     free(env);
 }
 
-int function(char *str, char ***env)
-{
-    if (my_strncmp(str, "cd", 2) == 0)
-        return change_dir(str, env);
-    if (my_strncmp(str, "setenv", 6) == 0)
-        return set_environnement(str, env);
-    if (my_strncmp(str, "unsetenv", 8) == 0)
-        return delete_env(str, env);
-    if (my_strncmp(str, "env", 3) == 0)
-        return show_env(*env);
-    return 0;
-    // return new_process(&str, *env);
-}
-
 static void ttycheck(void)
 {
     if (isatty(STDIN_FILENO))
         write(1, "$> ", 3);
-}
-
-void format_str(char *str)
-{
-    int i;
-
-    for (i = 0; str[i]; i++) {
-        if (str[i] == '\t')
-            str[i] = ' ';
-    }
-    for (i = 0; str[i] && str[i] == ' '; i++);
-    my_strcpy(str, str + i);
-    if (str[my_strlen(str) - 1] == '\n')
-        str[my_strlen(str) - 1] = '\0';
 }
 
 static void travel_command(char *str, char ***env, int *return_value,
@@ -102,11 +74,11 @@ void print_pipeline(pipeline_t **pipeline)
     }
 }
 
-static garbage_t init_garbage(char **str, char ***env)
+static garbage_t init_garbage(char **str, garbage_t *old)
 {
     garbage_t garbage;
 
-    garbage.env = env;
+    garbage.env = old->env;
     garbage.raw_command = *str;
     garbage.return_value = 0;
     garbage.save_out = STDOUT_FILENO;
@@ -125,15 +97,13 @@ int main(int argc, char **argv, char **env)
     garbage_t garbage;
 
     env = copy_env(env);
+    garbage.env = &env;
     ttycheck();
     while (getline(&str, &len, stdin) != -1 && my_strcmp(str, "exit\n")) {
-        garbage = init_garbage(&str, &env);
+        garbage = init_garbage(&str, &garbage);
         process_execution(&garbage, garbage.pipeline);
-        // lexing_features(&garbage, garbage.token_list);
         ttycheck();
     }
     freeing(str, env);
-    // freeing(str, env);
-    // return return_value;
-    return 0;
+    return garbage.return_value;
 }
