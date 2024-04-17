@@ -62,8 +62,8 @@ void show_reverse_history(history_t **history, int *status_flags);
 void show_no_param_history(history_t **history, int *status_flags);
 void show_history(history_t **history);
 void show_history_num(int num, history_t **history);
-void history_up(history_t **tmp, history_t **history);
-void history_down(history_t **tmp);
+int history_up(history_t **tmp, history_t **history, int *cursor);
+int history_down(history_t **tmp, int *cursor);
 
 char **my_str_to_minishell_array(char const *str, char *separateur);
 int my_c_redi_pipe(char c);
@@ -74,10 +74,13 @@ int my_c_redi_g(char c);
 void add_redi_r(char **tab, int **index, char const *str, int *h);
 void add_redi_g(char **tab, int **index, char const *str, int *h);
 
+void display_command(char *line, history_t *tmp, int cursor_mv);
 int my_getline(char **line, size_t *n, history_t **hist);
 void set_non_canonical_mode(void);
-int is_end(char **line, int len, history_t *tmp);
+int is_end(char **line, int len, history_t *tmp, int *cursor_mv);
 void is_del(char **line, int len, history_t *tmp);
+int arrow_right(int *cursor);
+int arrow_left(history_t *tmp, char *line, int *cursor);
 
 
 #endif

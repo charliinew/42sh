@@ -17,10 +17,11 @@ static void history_up_end(history_t **tmp)
     (*tmp)->command = my_strdup((*tmp)->prev->next->command);
 }
 
-void history_up(history_t **tmp, history_t **history)
+int history_up(history_t **tmp, history_t **history, int *cursor)
 {
     if (*tmp == NULL && *history == NULL)
-        return;
+        return *cursor;
+    *cursor = 0;
     if (*tmp == NULL) {
         *tmp = malloc(sizeof(history_t));
         memcpy(*tmp, *history, sizeof(history_t));
@@ -30,12 +31,13 @@ void history_up(history_t **tmp, history_t **history)
         (*tmp)->command = my_strdup((*tmp)->command);
     } else
         history_up_end(tmp);
+    return *cursor;
 }
 
-void history_down(history_t **tmp)
+int history_down(history_t **tmp, int *cursor)
 {
     if (*tmp == NULL)
-        return;
+        return *cursor;
     else if (*tmp != NULL && (*tmp)->prev != NULL) {
         memcpy(*tmp, (*tmp)->prev, sizeof(history_t));
         (*tmp)->command = my_strdup((*tmp)->command);
@@ -43,4 +45,6 @@ void history_down(history_t **tmp)
         free((*tmp)->command);
         *tmp = NULL;
     }
+    *cursor = 0;
+    return *cursor;
 }

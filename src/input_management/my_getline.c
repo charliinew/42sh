@@ -24,7 +24,7 @@ static int choose_command(char **line, history_t **tmp, int exit)
     return exit;
 }
 
-static void display_command(char *line, history_t *tmp)
+void display_command(char *line, history_t *tmp, int cursor_mv)
 {
     printf("\033[2K\r");
     ttycheck();
@@ -32,33 +32,37 @@ static void display_command(char *line, history_t *tmp)
         printf("%s", tmp->command);
     else
         printf("%s", line);
+    for (int i = 0; i < cursor_mv; i++)
+        printf("\033[D");
 }
 
-static void analyse_input(int key, char **line, history_t **tmp,
+static int analyse_input(int key, char **line, history_t **tmp,
     history_t **hist)
 {
+    static int cursor = 0;
+
     switch (key) {
         case KEY_UP:
-            return history_up(tmp, hist);
+            return history_up(tmp, hist, &cursor);
         case KEY_DOWN:
-            return history_down(tmp);
+            return history_down(tmp, &cursor);
         case KEY_RIGHT:
-            printf("Right arrow pressed\n");
-            break;
+            return arrow_right(&cursor);
         case KEY_LEFT:
-            printf("Left arrow pressed\n");
-            break;
+            return arrow_left(*tmp, *line, &cursor);
         case KEY_TAB:
             printf("Tab pressed\n");
             break;
         default:
             break;
     }
+    return cursor;
 }
 
-static void update_command(int ch, char **line, history_t *tmp, int len)
+static void update_command(int ch, char **line, history_t *tmp)
 {
     size_t len_tmp;
+    int len = my_strlen(*line);
 
     if (tmp != NULL) {
         len_tmp = my_strlen(tmp->command);
@@ -105,15 +109,20 @@ static int use_input(char **line, history_t **tmp, int len, history_t **hist)
 {
     int ch = getchar();
     int sp_key = get_id_key(ch);
+    static int cursor_mv = 0;
 
-    if (ch == '\n')
-        return is_end(line, len, *tmp);
+    if (ch == 4) {
+        cursor_mv = 0;
+        return -1;
+    } if (ch == '\n')
+        return is_end(line, len, *tmp, &cursor_mv);
     if (sp_key == 0)
-        update_command(ch, line, *tmp, len);
+        update_command(ch, line, *tmp, cursor_mv);
     else if (sp_key == KEY_BACKSPACE)
         is_del(line, len, *tmp);
     else
-        analyse_input(sp_key, line, tmp, hist);
+        cursor_mv = analyse_input(sp_key, line, tmp, hist);
+    display_command(*line, *tmp, cursor_mv);
     return 0;
 }
 
@@ -141,10 +150,9 @@ int my_getline(char **line, size_t *n, history_t **hist)
     if (*line == NULL)
         return -1;
     *line[0] = '\0';
-    display_command(*line, tmp);
+    display_command(*line, tmp, 0);
     while (1) {
         exit = manage_input(line, &tmp, n, hist);
-        display_command(*line, tmp);
         if (exit != 0)
             break;
     }
