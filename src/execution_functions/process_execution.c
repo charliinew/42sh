@@ -17,7 +17,7 @@
 
 static bool is_node_correct(garbage_t *garbage, pipeline_t *pipeline)
 {
-    if (pipeline->token_list || pipeline->next || pipeline->token_list)
+    if (pipeline->token_list && pipeline->next && pipeline->next->token_list)
         return true;
     else {
         free_pipeline(garbage->pipeline);

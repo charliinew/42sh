@@ -46,7 +46,7 @@ static bool check_sep(char *str, int i, int index)
 {
     char item[] = ";|><&\n";
 
-    if (i == index)
+    if (i == index && i != 0)
         return false;
     for (int j = 0; item[j]; j++) {
         if (item[j] == str[i])
