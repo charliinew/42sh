@@ -1,9 +1,0 @@
-vgcore.*
-mysh
-*.o
-*.log
-*.a
-.vscode
-toto*
-cat
-42sh
