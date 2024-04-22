@@ -29,9 +29,9 @@ static int is_history_flags(char *arg)
 static int is_correct_command(char **command)
 {
     for (int i = 1; command[i] != 0; i++) {
-        if (my_str_isnum(command[i]) == 0)
-            continue;
-        if (is_history_flags(command[i]) != 0)
+        if (my_str_isnum(command[i]) == 1)
+            return 1;
+        if (is_history_flags(command[i]) != 1)
             return 0;
     }
     return 1;

@@ -25,6 +25,7 @@ static void get_time(history_t *node)
         node->time = NULL;
         return;
     }
+    strftime(node->time, 9, "%H:%M:%S", time_info);
 }
 
 static void add_node_history(char *command, history_t **history)
