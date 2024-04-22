@@ -87,7 +87,6 @@ static garbage_t init_garbage(char **str, garbage_t *old)
     garbage.alias = old->alias;
     garbage.local = old->local;
     garbage.pipeline = init_pipeline(garbage.raw_command);
-    print_pipeline(garbage.pipeline);
     return garbage;
 }
 
