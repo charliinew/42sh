@@ -131,7 +131,8 @@ int redirection_errors(char *command, char **pipes, int i);
 int command_errors(char *str, char **pipes, int save_in, int save_out);
 void free_alias(garbage_t *garbage);
 garbage_t init_local(garbage_t *garbage);
-token_t *insert_node(token_t *token, char *com, garbage_t *garbage);
+token_t *insert_node(token_t *token, char *com, garbage_t *garbage,
+    pipeline_t *pipeline);
 void clean_space(char *str);
 void print_token_list(token_t **token_list);
 void print_pipeline(pipeline_t **pipeline);
@@ -140,18 +141,24 @@ char *array_to_str(char **array);
 int check_built(char **command, garbage_t *garbage);
 int check_built_on_fork(char **command, char ***env);
 int set_alias(char *str, char ***env, garbage_t *garbage);
-void free_array(char **arr);
+int free_array(char **arr);
 int unalias(char *str, char ***env, garbage_t *garbage);
 int set_local(char *str, char ***env, garbage_t *garbage);
 int unset_var(char *str, char ***env, garbage_t *garbage);
 void free_var(garbage_t *garbage);
-token_t *check_varenv(token_t *token, garbage_t *garbage);
-token_t *manage_variable(token_t *token, garbage_t *garbage);
-token_t *check_local(token_t *token, garbage_t *garbage);
+int check_varenv(token_t *token, garbage_t *garbage,
+    pipeline_t *pipeline);
+token_t *manage_variable(token_t *token, garbage_t *garbage,
+    pipeline_t *pipeline);
+int check_local(token_t *token, garbage_t *garbage,
+    pipeline_t *pipeline);
 void delete_var(var_t *current, var_t *prev, garbage_t *garbage);
 int len_alias(garbage_t *garbage);
-void reset_index(garbage_t *garbage);
 void delete_alias(alias_t *current, alias_t *prev, garbage_t *garbage);
 int var_len(garbage_t *garbage);
-token_t *check_alias(token_t *token, garbage_t *garbage);
+token_t *check_alias(token_t *token, garbage_t *garbage, pipeline_t *pipeline);
+void reset_index(pipeline_t *pip);
+void format_variable(garbage_t *garbage, pipeline_t **pip);
+void cleanup(garbage_t *g);
+int check_alias_onpip(pipeline_t *pipeline);
 #endif
