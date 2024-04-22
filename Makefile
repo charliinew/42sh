@@ -38,6 +38,7 @@ SRC = main.c \
 	  src/var_env/var_env.c \
 	  src/local/manage_local.c \
 	  src/alias/manage_alias.c \
+	  src/cleanup.c \
 
 OBJ = $(SRC:.c=.o)
 
