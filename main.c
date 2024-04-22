@@ -88,6 +88,7 @@ static garbage_t init_garbage(char **str, garbage_t *old)
     garbage.alias = old->alias;
     garbage.local = old->local;
     garbage.pipeline = init_pipeline(garbage.raw_command);
+    format_variable(&garbage, garbage.pipeline);
     return garbage;
 }
 
@@ -105,12 +106,14 @@ int main(int argc, char **argv, char **env)
     garbage.env = &env;
     garbage.alias = NULL;
     garbage.local = NULL;
-    while (my_getline(&str, &len, garbage.history) != -1
-        && my_strcmp(str, "exit\n")) {
+    while (my_getline(&str, &len, garbage.history) != -1) {
         garbage = init_garbage(&str, &garbage);
         add_history(str, garbage.history);
+        if (garbage.return_value == 0)
+            process_execution(&garbage, garbage.pipeline);
         process_execution(&garbage, garbage.pipeline);
     }
     freeing(str, env);
+    cleanup(&garbage);
     return garbage.return_value;
 }
