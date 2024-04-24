@@ -4,3 +4,7 @@ mysh
 *.log
 *.a
 .vscode
+toto*
+cat
+42sh
+.idea

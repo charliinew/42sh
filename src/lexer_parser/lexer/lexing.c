@@ -12,12 +12,43 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
+void free_token_list(token_t **token_list)
+{
+    token_t *head = *token_list;
+    token_t *tmp;
+
+    for (int i = 0; head; i++) {
+        tmp = head;
+        head = head->next;
+        if (tmp->arg)
+            free(tmp->arg);
+        free(tmp);
+    }
+    free(token_list);
+    token_list = NULL;
+}
+
+static int len_nodes(token_t **token_list)
+{
+    token_t *current = *token_list;
+    int compt = 0;
+
+    while (current) {
+        compt++;
+        current = current->next;
+    }
+    return compt;
+}
+
 static void reverse_list(token_t **token_list)
 {
     token_t *prev = NULL;
     token_t *current = *token_list;
     token_t *next = NULL;
 
+    if (len_nodes(token_list) <= 0) {
+        return;
+    }
     while (current) {
         next = current->next;
         current->prev = next;
@@ -33,6 +64,8 @@ static bool check_item(char c)
 {
     char item[] = " ;|()><'\"\\\t\n*[]&!`?";
 
+    if (c == '\0')
+        return true;
     for (int i = 0; item[i]; i++) {
         if (item[i] == c)
             return true;
@@ -77,10 +110,11 @@ static void build_token_arg(token_t **token_list, char *str, int i, int index)
 token_t **init_token_list(char *str)
 {
     int index = 0;
+    int i;
     token_t **token_list = malloc(sizeof(token_t *));
 
     *token_list = NULL;
-    for (int i = 0; str[i]; i++) {
+    for (i = 0; i <= strlen(str); i++) {
         if (check_item(str[i])) {
             build_token_arg(token_list, str, i, index);
             index = i + 1;
