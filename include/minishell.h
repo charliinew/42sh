@@ -14,6 +14,7 @@
     #include <glob.h>
     #include <stdio.h>
     #include <dirent.h>
+    #include <sys/stat.h>
     #define IS_ALPHA(c) (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z'))
     #define IS_NUM(c) ('0' <= c && c <= '9')
     #define KEY_UP 1
