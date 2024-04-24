@@ -54,6 +54,8 @@ SRC = main.c \
 	  src/globbings/assemble_hard.c \
 	  src/globbings/assemble_simple.c \
 	  src/cleanup.c \
+	  tools/int_to_str.c \
+	  src/repeat/repeat.c
 
 OBJ = $(SRC:.c=.o)
 

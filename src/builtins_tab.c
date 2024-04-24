@@ -23,5 +23,6 @@ builtins_t built[] = {
     {"set", set_local},
     {"unset", unset_var},
     {"history", history_command},
+    {"repeat", repeat},
     {0, 0}
 };

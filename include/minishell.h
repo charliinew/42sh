@@ -210,4 +210,7 @@ void reset_index(pipeline_t *pip);
 void format_variable(garbage_t *garbage, pipeline_t **pip);
 void cleanup(garbage_t *g);
 int check_alias_onpip(pipeline_t *pipeline);
+int my_intlen(long nb);
+char *int_to_str(int nb);
+int repeat(char *str, char ***env, garbage_t *garbage);
 #endif
