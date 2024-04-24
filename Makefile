@@ -56,7 +56,6 @@ SRC = main.c \
 	  src/cleanup.c \
 	  src/which_where.c \
 	  tools/int_to_str.c \
-	  src/repeat/repeat.c
 
 OBJ = $(SRC:.c=.o)
 
