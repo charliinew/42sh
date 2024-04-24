@@ -11,6 +11,5 @@
 void sigint_handler(int signum)
 {
     if (isatty(STDIN_FILENO))
-        write(1, "^C\n$> ", 6);
+        write(1, "\n$> ", 4);
 }
-
