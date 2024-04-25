@@ -45,7 +45,10 @@ static void set_fd_out(char *str, pipeline_t *node)
 
 static void set_fd_in(char *str, pipeline_t *pipeline)
 {
-    pipeline->next->input = open(str, O_RDONLY);
+    if (!strcmp(pipeline->sep, "<<"))
+        pipeline->next->input = find_stdin(str);
+    else
+        pipeline->next->input = open(str, O_RDONLY);
     if (pipeline->next->input == -1)
         return write_error(str);
     pipeline->next->token_list = pipeline->token_list;
