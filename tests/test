@@ -1304,3 +1304,11 @@ TESTS=
 echo "prout && ls > ici"
 echo "ici"
 [235-END]
+
+[236]
+NAME="exit"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "exit 42"
+[236-END]
