@@ -43,7 +43,7 @@ static void fill_string(token_t **head)
     }
 }
 
-int get_string(garbage_t *, token_t **head)
+static int string(token_t **head)
 {
     token_t *current = (*head)->next;
     int len = 0;
@@ -86,7 +86,7 @@ static void free_node(token_t *token)
     free(token);
 }
 
-static void delete_node_backslash(garbage_t *garbage, token_t *current)
+static void delete_node_backslash(token_t **head, token_t *current)
 {
     token_t *save;
 
@@ -107,10 +107,10 @@ static void delete_node_backslash(garbage_t *garbage, token_t *current)
     if (save)
         save->prev = current;
     if (current->prev == 0)
-        *garbage->token_list = current;
+        *head = current;
 }
 
-static void reset_index(token_t *current)
+static void reset_inib_index(token_t *current)
 {
     int index = 0;
 
@@ -121,7 +121,7 @@ static void reset_index(token_t *current)
         current->index = current->prev->index + 1;
 }
 
-int inibitor(garbage_t *garbage, token_t **head)
+static int backslash(token_t **head)
 {
     token_t *current = *head;
     int new_len = 0;
@@ -139,7 +139,28 @@ int inibitor(garbage_t *garbage, token_t **head)
     current->arg = malloc(new_len + 1);
     current->arg[0] = '\0';
     concat_arg(current);
-    delete_node_backslash(garbage, current);
-    reset_index(current);
+    delete_node_backslash(head, current);
+    reset_inib_index(current);
+    return 0;
+}
+
+int inibitors(pipeline_t *pipeline, garbage_t *garbage)
+{
+    int return_value = 0;
+    token_t *current;
+
+    if (pipeline->token_list == 0)
+        return 0;
+    current = *pipeline->token_list;
+    for (; current; current = current->next) {
+        if (current->sep == '\\')
+            return_value = backslash(&current);
+        if (current->sep == '\"')
+            return_value = string(&current);
+        if (return_value) {
+            garbage->return_value = return_value;
+            return return_value;
+        }
+    }
     return 0;
 }
