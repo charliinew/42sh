@@ -14,8 +14,17 @@
 
 builtins_t built[] = {
     {"env", show_env},
+    {"exit", exit_built},
     {"setenv", set_environnement},
     {"unsetenv", delete_env},
     {"cd", change_dir},
+    {"alias", set_alias},
+    {"unalias", unalias},
+    {"set", set_local},
+    {"unset", unset_var},
+    {"history", history_command},
+    {"which", which_functions},
+    {"where", where_functions},
+    {"repeat", repeat_built},
     {0, 0}
 };

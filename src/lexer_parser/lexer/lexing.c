@@ -20,7 +20,8 @@ void free_token_list(token_t **token_list)
     for (int i = 0; head; i++) {
         tmp = head;
         head = head->next;
-        free(tmp->arg);
+        if (tmp->arg)
+            free(tmp->arg);
         free(tmp);
     }
     free(token_list);
@@ -113,7 +114,7 @@ token_t **init_token_list(char *str)
     token_t **token_list = malloc(sizeof(token_t *));
 
     *token_list = NULL;
-    for (i = 0; i <= strlen(str); i++) {
+    for (i = 0; i <= my_strlen(str); i++) {
         if (check_item(str[i])) {
             build_token_arg(token_list, str, i, index);
             index = i + 1;
