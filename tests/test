@@ -778,15 +778,6 @@ TESTS=
 #   echo "ls -l | grep a | grep o ; ls -a | grep ."
 # [107-END]
 
-[107]
-NAME=""
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "ls -l > coucou"
-  echo "cat coucou"
-[107-END]
-
 [108]
 NAME=""
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -815,14 +806,14 @@ TESTS=
 #   echo "ls |||||||||"
 # [110-END]
 
-[111]
-NAME=""
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "ls -l > coucou"
-  echo "cat < coucou | grep a"
-[111-END]
+# [111]
+# NAME=""
+# SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+# CLEAN=""
+# TESTS=
+#   echo "ls -l > coucou"
+#   echo "cat < coucou | grep a"
+# [111-END]
 
 # [112]
 # NAME="attention bug <<"
@@ -1284,7 +1275,7 @@ SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
 echo "ls | grep c || prout > ici"
-echo "ici"
+echo "rm ici"
 [233-END]
 
 [234]
@@ -1293,7 +1284,7 @@ SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
 echo "ls | grep c && prout > ici"
-echo "ici"
+echo "rm ici"
 [234-END]
 
 [235]

@@ -112,13 +112,19 @@ int parsing_function(garbage_t *garbage, token_t **token_list);
 
 int globbings(garbage_t *garbage, token_t **token_list);
 
+int inibitors(pipeline_t *pipeline, garbage_t *garbage);
+
 int new_process(
     pipeline_t *pipeline, char **command, char **env, garbage_t *garbage);
 
+pipeline_t *execute_or(garbage_t *garbage, pipeline_t *pipeline);
+
+pipeline_t *execute_and(garbage_t *garbage, pipeline_t *pipeline);
+
 pipeline_t *execute_semicolon(garbage_t *garbage, pipeline_t *pipeline);
-
+void set_canonical_mode(void);
 pipeline_t *execute_redirection(garbage_t *garbage, pipeline_t *pipeline);
-
+int find_stdin(char *file);
 pipeline_t **init_pipeline(char *str);
 int find_repeat(pipeline_t *pipeline, garbage_t *garbage);
 void process_execution(garbage_t *garbage, pipeline_t **pipeline);
