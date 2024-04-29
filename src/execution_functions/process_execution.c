@@ -38,6 +38,8 @@ static bool is_node_correct(garbage_t *garbage, pipeline_t *pipeline)
 
 static bool is_pipeline_correct(garbage_t *garbage, pipeline_t *pipeline)
 {
+    if (!pipeline)
+        return false;
     if (!pipeline->token_list && !strcmp(pipeline->sep, "&&"))
         pipeline = pipeline->next;
     for (; pipeline; pipeline = pipeline->next) {
