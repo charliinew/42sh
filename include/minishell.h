@@ -234,4 +234,5 @@ char *int_to_str(int nb);
 int repeat(char *str, char ***env, garbage_t *garbage);
 
 void free_history(history_t **history);
+int get_prompt_size(void);
 #endif

@@ -11,6 +11,7 @@ SRC = main.c \
 	  src/feature_tab.c\
 	  src/globbings/globbings.c\
 	  src/cd.c \
+	  src/prompt.c \
 	  src/exit_built.c\
 	  src/env.c \
 	  src/setenv.c \

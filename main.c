@@ -10,8 +10,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <sys/wait.h>
 #include <signal.h>
+#include <string.h>
+#include <pwd.h>
 
 void freeing(char *str, char **env)
 {
@@ -22,12 +23,6 @@ void freeing(char *str, char **env)
     for (int i = 0; env[i]; i++)
         free(env[i]);
     free(env);
-}
-
-void ttycheck(void)
-{
-    if (isatty(STDIN_FILENO))
-        my_printf("$> ");
 }
 
 void print_token_list(token_t **token_list)

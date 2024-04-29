@@ -47,9 +47,10 @@ static void count_line_to_clear(getline_t *getmy, int rest, int *actual_clear)
 static void display_command2(struct winsize *w, char *command, getline_t
     *getmy)
 {
+    int size_prompt = get_prompt_size();
     int len = my_strlen(command);
-    int actual_clear = (len + 3) / w->ws_col;
-    int rest = (len + 3) % w->ws_col;
+    int actual_clear = (len + size_prompt) / w->ws_col;
+    int rest = (len + size_prompt) % w->ws_col;
     int cursor_up = 0;
     int actual_cursor = getmy->cursor;
 

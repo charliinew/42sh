@@ -131,6 +131,7 @@ int my_getline_interact(char **line, history_t **hist)
         if (exit != 0)
             break;
     }
+    free(getmy);
     return choose_command(line, &tmp, exit);
 }
 
