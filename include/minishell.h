@@ -108,6 +108,7 @@ typedef struct getline_s {
     int cursor_up;
     int rest;
     int clear;
+    int previous_clear;
 } getline_t;
 
 extern redirection_tab_t r_tab[];
