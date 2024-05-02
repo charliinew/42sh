@@ -47,10 +47,10 @@ static bool check_sep(char *str, int *i, int index)
 
     if (*i == index && *i != 0)
         return false;
-    if (*i != 0 && str[*i - 1] == '\\') {
-        *i += 1;
+    if (*i != 0 && str[*i - 1] == '\\')
         return false;
-    }
+    if (str[*i] == '\0')
+        return true;
     for (int j = 0; item[j]; j++) {
         if (item[j] == str[*i])
             return true;
@@ -160,13 +160,12 @@ pipeline_t **init_pipeline(char *str)
 {
     pipeline_t **pipeline = malloc(sizeof(pipeline_t *));
     pipeline_t *node = NULL;
-    int i = 0;
     int index = 0;
 
     if (!pipeline)
         return NULL;
     *pipeline = NULL;
-    for (i = 0; i <= my_strlen(str); i++) {
+    for (int i = 0; str[i]; i++) {
         skip_features(str, &i);
         if (check_sep(str, &i, index)) {
             node = build_node(str, &i, &index);
