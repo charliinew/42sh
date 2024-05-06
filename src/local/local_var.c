@@ -106,6 +106,10 @@ int set_local(char *, char ***, garbage_t *garbage, pipeline_t *pip)
     char *value = pick_token_var(pip, 2);
 
     var_len(garbage);
+    if (char_is_alpha(var[0]) == 0) {
+        write(2, VAR_BEG, strlen(VAR_BEG));
+        return 1;
+    }
     if (str_is_alpha(var) == 0) {
         write(2, VAR, strlen(VAR));
         return 1;
