@@ -103,6 +103,10 @@ int set_alias(char *, char ***, garbage_t *garbage, pipeline_t *pip)
         return print_alias(garbage);
     if (value == NULL)
         return 0;
+    if (strcmp(name, "alias") == 0) {
+        fprintf(stderr, "alias: Too dangerous to alias that.\n");
+        return 1;
+    }
     if (already_exist_alias(name, value, garbage) == 1)
         return 0;
     add = malloc(sizeof(alias_t));
@@ -117,6 +121,10 @@ int unalias(char *str, char ***, garbage_t *garbage, pipeline_t *)
     char **command = my_str_to_array(str, " ");
     char *name = command[1];
 
+    if (command[0] == NULL || command[1] == NULL) {
+        fprintf(stderr, "unalias: Too few arguments.\n");
+        return 1;
+    }
     for (; current != NULL; current = current->next) {
         if (strcmp(name, current->name) == 0) {
             delete_alias(current, prev, garbage);
