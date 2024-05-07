@@ -55,6 +55,7 @@ SRC = main.c \
 	  src/input_management/non_canonical_mode.c \
 	  src/input_management/command_management.c \
 	  src/input_management/display_command.c \
+	  src/input_management/my_str_to_word_array_char.c \
 	  src/globbings/assemble_hard.c \
 	  src/globbings/assemble_simple.c \
 	  src/cleanup.c \
@@ -63,6 +64,11 @@ SRC = main.c \
 	  src/handle_signal.c \
 	  tools/int_to_str.c \
 	  src/execution_functions/redirection/double_left.c \
+	  src/autocompletion/auto_completion.c \
+	  src/autocompletion/completion_command.c \
+	  src/autocompletion/completion_file.c \
+	  src/autocompletion/display_tab.c \
+
 
 OBJ = $(SRC:.c=.o)
 
