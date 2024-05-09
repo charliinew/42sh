@@ -73,7 +73,7 @@ SRC = main.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS += -Llib -lmy -Iinclude -g -Wall -Wextra
+CFLAGS += -Llib -lmy -Iinclude -Wall -Wextra
 
 NAME = 42sh
 

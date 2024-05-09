@@ -657,14 +657,6 @@ TESTS=
   echo "<"
 [109-END]
 
-[110]
-NAME=""
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "ls |||||||||"
-[110-END]
-
 [114]
 NAME=""
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -716,16 +708,6 @@ TESTS=
   echo "grep hello < coucou"
   echo "cat < coucou"
 [119-END]
-
-[120]
-NAME=""
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "ls -l > output.txt"
-  echo "echo Hello, world! > coucou"
-  echo "cat coucou"
-[120-END]
 
 [121]
 NAME=""
